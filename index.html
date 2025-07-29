@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PETSc AI Chatbot Demo</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background: #0072CE;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+#chat-container {
+  max-width: 800px;
+  margin: 20px auto;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.message {
+  display: flex;
+  margin: 10px 0;
+}
+.message.user .bubble {
+  margin-left: auto;
+  background: #DCF8C6;
+}
+.message.bot .bubble {
+  margin-right: auto;
+  background: #F1F0F0;
+}
+.bubble {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 16px;
+}
+#input-area {
+  display: flex;
+  margin-top: 15px;
+}
+#user-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+#send-button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background: #0072CE;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#send-button:hover {
+  background: #005ea6;
+}
+</style>
+</head>
+<body>
+<header>
+<h1>PETSc AI Chatbot Demo</h1>
+<p>Ask questions about PETSc and scientific computing!</p>
+</header>
+<div id="chat-container">
+  <!-- chat messages will appear here -->
+</div>
+<div id="input-area">
+  <input type="text" id="user-input" placeholder="Type your question here..." />
+  <button id="send-button">Send</button>
+</div>
+<script>
+const chatContainer = document.getElementById('chat-container');
+const userInput = document.getElementById('user-input');
+const sendButton = document.getElementById('send-button');
+
+// Predefined responses for demonstration
+const responses = {
+  "what is petsc?": "PETSc stands for Portable, Extensible Toolkit for Scientific Computation. It provides data structures and solvers for the scalable (parallel) solution of scientific applications modeled by partial differential equations.",
+  "how can i install petsc?": "You can download PETSc from the official website and follow the installation instructions, or use your system's package manager. For example, on Debian-based systems you can run 'sudo apt-get install petsc-dev'.",
+  "what programming languages does petsc support?": "PETSc is primarily written in C and can be used from C or C++. It also provides interfaces to Fortran and Python (via petsc4py).",
+  "default": "This is a limited demo of the PETSc AI Chatbot. Please ask questions about PETSc!"
+};
+
+function appendMessage(text, type) {
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('message', type);
+  const bubble = document.createElement('div');
+  bubble.classList.add('bubble');
+  bubble.textContent = text;
+  messageDiv.appendChild(bubble);
+  chatContainer.appendChild(messageDiv);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function handleUserInput() {
+  const question = userInput.value.trim();
+  if (!question) return;
+  appendMessage(question, 'user');
+  userInput.value = '';
+
+  const lower = question.toLowerCase();
+  const response = responses[lower] || responses['default'];
+  setTimeout(() => {
+    appendMessage(response, 'bot');
+  }, 500);
+}
+
+sendButton.addEventListener('click', handleUserInput);
+userInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    handleUserInput();
+  }
+});
+</script>
+</body>
+</html>
